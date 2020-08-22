@@ -12,4 +12,9 @@ soup = bs.BeautifulSoup (source, 'lxml')
 for wml2 in soup.find_all('wml2:value'):
     print(wml2.string)
 
+cfs = float(wml2.string)
+
+if cfs > 270 and 600 > cfs:
+    print("Decker's is running. You should go paddling")
+else: print("Maybe you should find something else to do.")
 
