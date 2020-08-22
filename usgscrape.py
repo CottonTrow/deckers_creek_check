@@ -10,6 +10,7 @@ soup = bs.BeautifulSoup (source, 'lxml')
 
 #the location in the website of the data we desire
 for wml2 in soup.find_all('wml2:value'):
+    print('The level is currently:')
     print(wml2.string)
 
 #creating my analysis
