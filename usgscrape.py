@@ -8,9 +8,6 @@ import urllib.request
 source = urllib.request.urlopen('https://waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03062500&parameterCd=00060&siteType=ST&siteStatus=all') .read()
 soup = bs.BeautifulSoup (source, 'lxml')
 
-#I don't know why this is here, but it seemed like a good thing
-nav = soup.nav
-
 #the location in the website of the data we desire
 for wml2 in soup.find_all('wml2:value'):
     print(wml2.string)
