@@ -12,9 +12,4 @@ soup = bs.BeautifulSoup (source, 'lxml')
 for wml2 in soup.find_all('wml2:value'):
     print(wml2.string)
 
-#remnants of testing
-'''for paragraph in soup.find_all('p'):
-    print(paragraph.string)'''
-
-#print(soup.get_text())
 
