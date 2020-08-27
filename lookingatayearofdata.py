@@ -34,5 +34,8 @@ print(len(runnablecfs))
 for wml2 in soup.find_all('wml2:time'):
     timestamp.append(wml2.string)
 
+decker_dict = dict(zip(timestamp, cfs))
+print(decker_dict)
+
 
 
