@@ -12,12 +12,13 @@ soup = bs.BeautifulSoup(source, 'xml')
 #the list that will hold all of the values
 cfs = []
 runnablecfs = []
+timestamp = []
 #the location in the website of the data we desire
 for wml2 in soup.find_all('wml2:value'):
 #propogating the list
     cfs.append(float(wml2.string))
-#print(len(cfs))
-print(type(cfs))
+
+#check to see if items move into new list
 print(len(cfs))
 print(len(runnablecfs))
 
@@ -25,9 +26,12 @@ for x in cfs:
     if 270 < x < 600:
         runnablecfs.append(x)
 
-print(type(cfs))
 print(len(cfs))
 print(len(runnablecfs))
+
+#Introducing the time stamp
+for wml2 in soup.find_all('wml2:time'):
+    timestamp.append(wml2.string)
 
 
 
