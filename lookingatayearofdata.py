@@ -9,13 +9,14 @@ from collections import Counter
 source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03062500&period='
                                 'P365D&parameterCd=00060&siteType=ST&siteStatus=all') .read()
 soup = bs.BeautifulSoup(source, 'xml')
+
 #the list that will hold all of the values
 cfs = []
 runnablecfs = []
 timestamp = []
-#the location in the website of the data we desire
+
+#gathering the cfs values
 for wml2 in soup.find_all('wml2:value'):
-#propogating the list
     cfs.append(float(wml2.string))
 
 #check to see if items move into new list
@@ -29,7 +30,7 @@ for x in cfs:
 print(len(cfs))
 print(len(runnablecfs))
 
-#Introducing the time stamp
+#gathering the timestamps
 for wml2 in soup.find_all('wml2:time'):
     timestamp.append(wml2.string)
 
