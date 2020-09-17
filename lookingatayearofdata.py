@@ -40,6 +40,14 @@ for wml2 in soup.find_all('wml2:time'):
 decker_dict = dict(zip(timestamp, cfs))
 #print(decker_dict)
 
-#filtering out duplicate day
-"""one possibility is to create a new list for every day and put all entries of that day into its list. Then count the
-number of lists. This would give me a single entry per day."""
+#filtering out duplicate days
+"""Figuring out how to use panda"""
+df = pd.DataFrame.from_dict(decker_dict, orient='index')
+#print(df)
+
+d = {'col1': [timestamp], 'col2': [cfs]}
+dp = pd.DataFrame(d)
+#print(dp)
+s = pd.DataFrame(df.items(), columns=['Date', 'Value'])
+#print(s)
+
