@@ -41,7 +41,7 @@ decker_dict = dict(zip(timestamp, cfs))
 #print(decker_dict)
 
 #filtering out duplicate days
-"""Figuring out how to use panda"""
+"""Figuring out how to use panda, I trying out two different methods for creating the dataframe"""
 df = pd.DataFrame.from_dict(decker_dict, orient='index')
 #print(df)
 
