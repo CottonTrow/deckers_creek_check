@@ -42,9 +42,17 @@ i = 0
 while i < len(timestamp):
     date_str = timestamp[i][:19]
     timestamp[i] = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S')
-    # print(type(timestamp[i]))
+    print(type(timestamp[i]))
     i += 1
 del i
+
+#print(timestamp)
+sys.exit()
+
+# for s in timestamp:
+#     s = s[:19]
+#     s = datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
+
 
 #splicing the timestamps and cfs values
 decker_dict = dict(zip(timestamp, cfs))
@@ -56,20 +64,22 @@ decker_dict = dict(zip(timestamp, cfs))
 
 df = pd.DataFrame.from_dict(decker_dict, orient='index')
 df = df.reset_index()
-df = df.rename(columns = {'index':'Date',0:'CFS'})
 #df['date_no_time'] = datetime.strptime(df['index'], "%Y-%m-%d")
 
+print(type(df['index'][0]))
 
 #df['date'] = df['index'].dt.normalize()
 #df['date_no_time'] = pd.to_datetime(df['index']).dt.date
 
-
+# d = {'col1': [timestamp], 'col2': [cfs]}
+# dp = pd.DataFrame(d)
 
 #print(dp.head())
-
+sys.exit()
 
 
 
 #print(dp)
 #s = pd.DataFrame(df.items(), columns=['Date', 'Value'])
 #print(s)
+
