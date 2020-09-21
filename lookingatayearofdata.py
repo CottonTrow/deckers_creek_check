@@ -64,22 +64,12 @@ decker_dict = dict(zip(timestamp, cfs))
 df = pd.DataFrame.from_dict(decker_dict, orient='index')
 df = df.reset_index()
 df = df.rename(columns = {'index':'Date',0:'CFS'})
-#df['date_no_time'] = datetime.strptime(df['index'], "%Y-%m-%d")
 
-# print(type(df['Date','CFS']))
-print(df)
-#df['date'] = df['index'].dt.normalize()
-#df['date_no_time'] = pd.to_datetime(df['index']).dt.date
-
-# d = {'col1': [timestamp], 'col2': [cfs]}
-# dp = pd.DataFrame(d)
-
-#print(dp.head())
+# print(df.sort_values(['CFS'], ascending=False))
+print(df.loc[(df['CFS'] < 600) & (df['CFS'] > 270)])
 sys.exit()
 
 
 
-#print(dp)
-#s = pd.DataFrame(df.items(), columns=['Date', 'Value'])
-#print(s)
+
 
