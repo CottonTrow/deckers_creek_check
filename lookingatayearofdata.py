@@ -55,6 +55,7 @@ del i
 
 #splicing the timestamps and cfs values
 decker_dict = dict(zip(timestamp, cfs))
+print('The previous 365 days of data for the Blackwater river at Davis')
 #print(decker_dict)
 
 
@@ -64,9 +65,12 @@ decker_dict = dict(zip(timestamp, cfs))
 df = pd.DataFrame.from_dict(decker_dict, orient='index')
 df = df.reset_index()
 df = df.rename(columns = {'index':'Date',0:'CFS'})
-
+# get it? redundant? Redonedate!
+df['ReDoneDates'] = pd.DatetimeIndex(df['Date']).to_period('D')
+print(df.head(5))
+print(df.dtypes)
 # print(df.sort_values(['CFS'], ascending=False))
-print(df.loc[(df['CFS'] < 600) & (df['CFS'] > 270)])
+# print(df.loc[(df['CFS'] < 600) & (df['CFS'] > 270)])
 sys.exit()
 
 
