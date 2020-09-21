@@ -62,6 +62,9 @@ print('The previous 365 days of data for the Blackwater river at Davis')
 #filtering out duplicate days
 """Figuring out how to use panda, I trying out two different methods for creating the dataframe"""
 
+
+
+
 df = pd.DataFrame.from_dict(decker_dict, orient='index')
 df = df.reset_index()
 df = df.rename(columns = {'index':'Date',0:'CFS'})
@@ -69,6 +72,8 @@ df = df.rename(columns = {'index':'Date',0:'CFS'})
 df['ReDoneDates'] = pd.DatetimeIndex(df['Date']).to_period('D')
 print(df.head(5))
 print(df.dtypes)
+print(df.drop_duplicates(subset=['ReDoneDates'], keep='first'))
+
 # print(df.sort_values(['CFS'], ascending=False))
 # print(df.loc[(df['CFS'] < 600) & (df['CFS'] > 270)])
 sys.exit()
