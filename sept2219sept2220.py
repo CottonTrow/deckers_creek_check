@@ -8,9 +8,9 @@ import numpy as np
 import pandas as pd
 import sys
 
-# location of desired information in the series of tubes
-source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03062500&period='
-                                'P365D&parameterCd=00060&siteType=ST&siteStatus=all').read()
+# looking at data from a range of 2019.sept.22 to 2020.sept.22
+source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03066000&startDT'
+                                '=2019-09-22&endDT=2020-09-22&parameterCd=00060,00065&siteType=ST&siteStatus=all').read()
 soup = bs.BeautifulSoup(source, 'xml')
 
 # the lists that will hold all of the values
@@ -70,9 +70,15 @@ df = df.reset_index()
 df = df.rename(columns = {'index':'Date',0:'CFS'})
 # get it? redundant? Redonedate!
 df['ReDoneDates'] = pd.DatetimeIndex(df['Date']).to_period('D')
-print(df.head(5))
-print(df.dtypes)
-print(df.drop_duplicates(subset=['ReDoneDates'], keep='first'))
+# print(df.head(5))
+# print(df.dtypes)
+
+
+new_df = df.drop_duplicates(subset=['ReDoneDates'], keep='first')
+newer_df = new_df.loc[(new_df['CFS'] < 600) & (new_df['CFS'] > 270)]
+# print(newer_df)
+print(len(newer_df))
+# newer_df.to_excel('/home/bily/Documents/python projects/blackwater.xlsx', index = False, header = True)
 
 # print(df.sort_values(['CFS'], ascending=False))
 # print(df.loc[(df['CFS'] < 600) & (df['CFS'] > 270)])
