@@ -23,7 +23,7 @@ timestamp = []
 for wml2 in soup.find_all('wml2:value'):
     cfs.append(float(wml2.string))
 
-# check to see if items move into new list
+'''check to see if items move into new list'''
 # print(len(cfs))
 # print(len(runnablecfs))
 
@@ -31,8 +31,6 @@ for x in cfs:
     if 270 < x < 600:
         runnablecfs.append(x)
 
-# print(len(cfs))
-# print(len(runnablecfs))
 
 # gathering the timestamps
 for wml2 in soup.find_all('wml2:time'):
@@ -45,8 +43,6 @@ while i < len(timestamp):
     i += 1
 del i
 
-# print(timestamp)
-
 
 # for s in timestamp:
 #     s = s[:19]
@@ -58,12 +54,8 @@ bw_dict = dict(zip(timestamp, cfs))
 print('The previous 365 days of data for the Blackwater river at Davis')
 # print(bw_dict)
 
-
 # filtering out duplicate days
 """Figuring out how to use panda, I trying out two different methods for creating the dataframe"""
-
-
-
 
 df = pd.DataFrame.from_dict(bw_dict, orient='index')
 df = df.reset_index()
@@ -74,14 +66,14 @@ df['ReDoneDates'] = pd.DatetimeIndex(df['Date']).to_period('D')
 # print(df.dtypes)
 
 
-new_df = df.drop_duplicates(subset=['ReDoneDates'], keep='first')
-newer_df = new_df.loc[(new_df['CFS'] < 600) & (new_df['CFS'] > 270)]
+new_df = df.loc[(df['CFS'] < 600) & (df['CFS'] > 270)]
+newer_df = new_df.drop_duplicates(subset=['ReDoneDates'], keep='first')
 # print(newer_df)
 print(len(newer_df))
-# newer_df.to_excel('/home/bily/Documents/python projects/blackwater.xlsx', index = False, header = True)
+newer_df.to_excel('/home/bily/Documents/python projects/blackwatercheck/blackwater.xlsx', index = False, header = True)
 
 # print(df.sort_values(['CFS'], ascending=False))
-# print(df.loc[(df['CFS'] < 600) & (df['CFS'] > 270)])
+
 sys.exit()
 
 
