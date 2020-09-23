@@ -1,8 +1,8 @@
-'''A program to check the last updated CFS level for Blackwater River at Davis
+'''A program to check the last updated CFS level for any river in the USGS database
 This is a fun project to teach Bily how to code, with a shit ton of help from Arthur Elmes'''
-'''To use this code you have to generate a WML website from USGS using this link 
+'''To use this code you have to generate a WML2 website from USGS using this link 
 -https://waterservices.usgs.gov/rest/IV-Test-Tool.html-
-Enter in the USGS site number and 00060 under conditions for CFS
+Enter in the USGS site number and 00060 under parameter code to get CFS
 Paste that website as the source and then set your CFS range'''
 # importing modules
 import bs4 as bs
@@ -13,7 +13,8 @@ import pandas as pd
 import sys
 
 # looking at data from a range of 2019.sept.22 to 2020.sept.22
-source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03070260&startDT=2019-09-21&endDT=2020-09-21&parameterCd=00060&siteType=ST&siteStatus=all').read()
+source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03062500&period='
+                                'P365D&parameterCd=00060&siteType=ST&siteStatus=all').read()
 soup = bs.BeautifulSoup(source, 'xml')
 
 # the lists that will hold all of the values
@@ -47,14 +48,14 @@ df = df.rename(columns = {'index':'Date',0:'CFS'})
 # get it? redundant? Redonedate!
 df['ReDoneDates'] = pd.DatetimeIndex(df['Date']).to_period('D')
 
-new_df = df.loc[(df['CFS'] < 2000) & (df['CFS'] > 500)]
+new_df = df.loc[(df['CFS'] < 600) & (df['CFS'] > 250)]
 newer_df = new_df.drop_duplicates(subset=['ReDoneDates'], keep='first')
-print(df.head())
-print(newer_df.head())
+# print(df.head())
+# print(newer_df.head())
 print(len(newer_df))
 
 # print(df.sort_values(['CFS'], ascending=False))
-print(df.mean())
+# print(df.mean())
 sys.exit()
 
 
