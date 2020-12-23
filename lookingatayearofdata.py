@@ -54,7 +54,7 @@ del i
 
 
 # splicing the timestamps and cfs values
-bw_dict = dict(zip(timestamp, cfs))
+new_dict = dict(zip(timestamp, cfs))
 # print('The previous 365 days of data for the Blackwater river at Davis')
 #print(bw_dict)
 
@@ -63,29 +63,27 @@ bw_dict = dict(zip(timestamp, cfs))
 """Figuring out how to use panda, I trying out two different methods for creating the dataframe"""
 
 
-
-
-df = pd.DataFrame.from_dict(bw_dict, orient='index')
+df = pd.DataFrame.from_dict(new_dict, orient='index')
 df = df.reset_index()
 df = df.rename(columns = {'index':'Date',0:'CFS'})
 # get it? redundant? Redonedate!
 df['ReDoneDates'] = pd.DatetimeIndex(df['Date']).to_period('D')
-# df = (df.drop_duplicates(subset=['ReDoneDates'], keep='first'))
 df['Month'] = pd.DatetimeIndex(df['Date']).month
 df['Month'] = df['Month'].astype('int32')
 df['Day'] = pd.DatetimeIndex(df['Date']).day
 df['Day'] = df['Day'].astype('int32')
+new_df = df.loc[(df['CFS'] < 2000) & (df['CFS'] > 700)]
+newer_df = new_df.drop_duplicates(subset=['ReDoneDates'], keep='first')
 
-df1 = (df.loc[(df['CFS'] > 700) & (df['CFS'] < 2000)])
-# print (df)
-print (len(df1))
-# print(df1)
-# df1.to_excel("AlleyDaze.xlsx",
+
+
+
+#newer_df.to_excel("AlleyDaze.xlsx",
 #            sheet_name='Sheet_name_1')
 
+# print (df1.groupby('Month').sum())
 
-
-
+print(len(newer_df))
 sys.exit()
 
 

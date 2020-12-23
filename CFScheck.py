@@ -12,9 +12,9 @@ import numpy as np
 import pandas as pd
 import sys
 
-# looking at data from a range of the past 365 days for the blackwater
-source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03066000&period='
-                                'P365D&parameterCd=00060&siteType=ST&siteStatus=all').read()
+# looking at data from a range of the year 2020 for the alley
+source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03070260&startDT'
+             '=2020-01-01T00:00-0500&endDT=2020-12-31T23:59-0500&parameterCd=00060&siteType=ST&siteStatus=all').read()
 soup = bs.BeautifulSoup(source, 'xml')
 
 # the lists that will hold all of the values
@@ -48,11 +48,12 @@ df = df.rename(columns = {'index':'Date',0:'CFS'})
 # get it? redundant? Redonedate!
 df['ReDoneDates'] = pd.DatetimeIndex(df['Date']).to_period('D')
 
-new_df = df.loc[(df['CFS'] < 600) & (df['CFS'] > 250)]
+new_df = df.loc[(df['CFS'] < 2000) & (df['CFS'] > 700)]
 newer_df = new_df.drop_duplicates(subset=['ReDoneDates'], keep='first')
 # print(df.head(5))
 # print(newer_df.head(5))
 print(len(newer_df))
+print (newer_df)
 
 # print(df.sort_values(['CFS'], ascending=False))
 # print(df.mean())
