@@ -70,14 +70,16 @@ df = df.reset_index()
 df = df.rename(columns = {'index':'Date',0:'CFS'})
 # get it? redundant? Redonedate!
 df['ReDoneDates'] = pd.DatetimeIndex(df['Date']).to_period('D')
-df = (df.drop_duplicates(subset=['ReDoneDates'], keep='first'))
+# df = (df.drop_duplicates(subset=['ReDoneDates'], keep='first'))
 df['Month'] = pd.DatetimeIndex(df['Date']).month
-
+df['Month'] = df['Month'].astype('int32')
+df['Day'] = pd.DatetimeIndex(df['Date']).day
+df['Day'] = df['Day'].astype('int32')
 
 df1 = (df.loc[(df['CFS'] > 700) & (df['CFS'] < 2000)])
 # print (df)
-# print (len(df1))
-print(df1.head(5))
+print (len(df1))
+# print(df1)
 # df1.to_excel("AlleyDaze.xlsx",
 #            sheet_name='Sheet_name_1')
 
