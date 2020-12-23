@@ -12,8 +12,8 @@ import numpy as np
 import pandas as pd
 import sys
 
-# looking at data from a range of 2019.sept.22 to 2020.sept.22
-source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03062500&period='
+# looking at data from a range of the past 365 days for the blackwater
+source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03066000&period='
                                 'P365D&parameterCd=00060&siteType=ST&siteStatus=all').read()
 soup = bs.BeautifulSoup(source, 'xml')
 
@@ -50,8 +50,8 @@ df['ReDoneDates'] = pd.DatetimeIndex(df['Date']).to_period('D')
 
 new_df = df.loc[(df['CFS'] < 600) & (df['CFS'] > 250)]
 newer_df = new_df.drop_duplicates(subset=['ReDoneDates'], keep='first')
-# print(df.head())
-# print(newer_df.head())
+# print(df.head(5))
+# print(newer_df.head(5))
 print(len(newer_df))
 
 # print(df.sort_values(['CFS'], ascending=False))

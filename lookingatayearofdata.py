@@ -8,8 +8,8 @@ import numpy as np
 import pandas as pd
 import sys
 
-# location of desired information in the series of tubes
-source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03062500&period='
+# location of desired information in the series of tubes for the alley
+source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03070260&period='
                                 'P365D&parameterCd=00060&siteType=ST&siteStatus=all').read()
 soup = bs.BeautifulSoup(source, 'xml')
 
@@ -28,7 +28,7 @@ for wml2 in soup.find_all('wml2:value'):
 # print(len(runnablecfs))
 
 for x in cfs:
-    if 270 < x < 600:
+    if 700 < x < 2000:
         runnablecfs.append(x)
 
 # print(len(cfs))
@@ -45,18 +45,18 @@ while i < len(timestamp):
     i += 1
 del i
 
-# print(timestamp)
+#print(timestamp)
 
 
-# for s in timestamp:
-#     s = s[:19]
-#     s = datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
+#for s in timestamp:
+ #    s = s[:19]
+  #   s = datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
 
 
 # splicing the timestamps and cfs values
 bw_dict = dict(zip(timestamp, cfs))
-print('The previous 365 days of data for the Blackwater river at Davis')
-# print(bw_dict)
+# print('The previous 365 days of data for the Blackwater river at Davis')
+#print(bw_dict)
 
 
 # filtering out duplicate days
@@ -70,12 +70,20 @@ df = df.reset_index()
 df = df.rename(columns = {'index':'Date',0:'CFS'})
 # get it? redundant? Redonedate!
 df['ReDoneDates'] = pd.DatetimeIndex(df['Date']).to_period('D')
-print(df.head(5))
-print(df.dtypes)
-print(df.drop_duplicates(subset=['ReDoneDates'], keep='first'))
+df = (df.drop_duplicates(subset=['ReDoneDates'], keep='first'))
+df['Month'] = pd.DatetimeIndex(df['Date']).month
 
-# print(df.sort_values(['CFS'], ascending=False))
-# print(df.loc[(df['CFS'] < 600) & (df['CFS'] > 270)])
+
+df1 = (df.loc[(df['CFS'] > 700) & (df['CFS'] < 2000)])
+# print (df)
+# print (len(df1))
+# print(df1.head(5))
+df1.to_excel("AlleyDaze.xlsx",
+            sheet_name='Sheet_name_1')
+
+
+
+
 sys.exit()
 
 
