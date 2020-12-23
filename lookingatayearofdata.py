@@ -9,8 +9,8 @@ import pandas as pd
 import sys
 
 # location of desired information in the series of tubes for the alley
-source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03070260&period='
-                                'P365D&parameterCd=00060&siteType=ST&siteStatus=all').read()
+source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03070260&startDT'
+             '=2020-01-01T00:00-0500&endDT=2020-12-31T23:59-0500&parameterCd=00060&siteType=ST&siteStatus=all').read()
 soup = bs.BeautifulSoup(source, 'xml')
 
 # the lists that will hold all of the values
@@ -77,9 +77,9 @@ df['Month'] = pd.DatetimeIndex(df['Date']).month
 df1 = (df.loc[(df['CFS'] > 700) & (df['CFS'] < 2000)])
 # print (df)
 # print (len(df1))
-# print(df1.head(5))
-df1.to_excel("AlleyDaze.xlsx",
-            sheet_name='Sheet_name_1')
+print(df1.head(5))
+# df1.to_excel("AlleyDaze.xlsx",
+#            sheet_name='Sheet_name_1')
 
 
 
