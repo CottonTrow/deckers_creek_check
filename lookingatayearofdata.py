@@ -7,6 +7,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 import sys
+import matplotlib.pyplot as plt
 
 # location of desired information in the series of tubes for the alley
 source = urllib.request.urlopen('https://nwis.waterservices.usgs.gov/nwis/iv/?format=waterml,2.0&sites=03070260&startDT'
@@ -20,23 +21,22 @@ timestamp = []
 
 
 # gathering the cfs values
-for wml2 in soup.find_all('wml2:value'):
-    cfs.append(float(wml2.string))
+def acquire_data():
+    for wml2 in soup.find_all('wml2:value'):
+        cfs.append(float(wml2.string))
+    for wml2 in soup.find_all('wml2:time'):
+        timestamp.append(wml2.string)
 
-# check to see if items move into new list
-# print(len(cfs))
-# print(len(runnablecfs))
 
-for x in cfs:
+'''for x in cfs:
     if 700 < x < 2000:
-        runnablecfs.append(x)
+        runnablecfs.append(x)'''
 
 # print(len(cfs))
 # print(len(runnablecfs))
 
-# gathering the timestamps
-for wml2 in soup.find_all('wml2:time'):
-    timestamp.append(wml2.string)
+
+acquire_data()
 
 i = 0
 while i < len(timestamp):
@@ -45,48 +45,39 @@ while i < len(timestamp):
     i += 1
 del i
 
-#print(timestamp)
-
-
-#for s in timestamp:
- #    s = s[:19]
-  #   s = datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
-
-
-# splicing the timestamps and cfs values
+#I want to turn this into a function
 new_dict = dict(zip(timestamp, cfs))
-# print('The previous 365 days of data for the Blackwater river at Davis')
-#print(bw_dict)
-
-
-# filtering out duplicate days
-"""Figuring out how to use panda, I trying out two different methods for creating the dataframe"""
-
-
 df = pd.DataFrame.from_dict(new_dict, orient='index')
 df = df.reset_index()
-df = df.rename(columns = {'index':'Date',0:'CFS'})
-# get it? redundant? Redonedate!
+df = df.rename(columns={'index': 'Date', 0: 'CFS'})
 df['ReDoneDates'] = pd.DatetimeIndex(df['Date']).to_period('D')
 df['Month'] = pd.DatetimeIndex(df['Date']).month
 df['Month'] = df['Month'].astype('int32')
 df['Day'] = pd.DatetimeIndex(df['Date']).day
 df['Day'] = df['Day'].astype('int32')
+
+
+
 new_df = df.loc[(df['CFS'] < 2000) & (df['CFS'] > 700)]
 newer_df = new_df.drop_duplicates(subset=['ReDoneDates'], keep='first')
 
-
-
-
-#newer_df.to_excel("AlleyDaze.xlsx",
-#            sheet_name='Sheet_name_1')
-
-# print (df1.groupby('Month').sum())
+groupdf = newer_df.groupby(pd.Grouper(key='Date',freq='M')).count()
+groupdf.drop(['ReDoneDates', 'Month', 'Day'], axis=1, inplace=True)
+groupdf.plot()
+#I want to figure out how to get the legend to draw the legend name from the date supplied by data
+plt.legend(['2020'])
+plt.xticks()
+plt.ylabel('# of Days the CFS range was between 700 and 2000')
+plt.xlabel('Month')
+plt.show()
 
 print(len(newer_df))
+#newer_df.to_excel("AlleyDaze.xlsx",
+#           sheet_name='Sheet_name_1')
+
+
+
+
+
+
 sys.exit()
-
-
-
-
-
